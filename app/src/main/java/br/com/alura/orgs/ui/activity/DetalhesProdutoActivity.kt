@@ -17,25 +17,32 @@ class DetalhesProdutoActivity : AppCompatActivity() {
         ActivityDetalhesBinding.inflate(layoutInflater)
     }
 
+    private lateinit var produto: Produto
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(binding.root)
-        val produto: Produto = intent.extras!!.getParcelable("produto")!!
+        getExtra()
+        inicializaCampos()
+
+    }
+    private fun getExtra() {
+        this.produto = intent.extras!!.getParcelable("produto")!!
         Log.i("Importado", "$produto")
+    }
+
+    private fun inicializaCampos() {
         val imagemCampo: ImageView = binding.detalhesImagem
         imagemCampo.tentaCarregarImagem(produto.imagem)
-
         val valor: TextView = binding.detalhesValor
         val valorEmMoeda = formataParaMoedaBrasileira(produto.valor)
         valor.text = valorEmMoeda
-
         val tituloCampo = binding.detalhesTitulo
         tituloCampo.text = produto.nome
         val descricaoCampo = binding.detalhesDescricao
         descricaoCampo.text = produto.descricao
     }
-
 
     private fun formataParaMoedaBrasileira(valor: Double): String {
         val formatador: NumberFormat = NumberFormat
